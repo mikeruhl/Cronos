@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Cronos.Web.Services;
 using FluentSpotifyApi.AuthorizationFlows.AspNetCore.AuthorizationCode.Extensions;
 using FluentSpotifyApi.AuthorizationFlows.AspNetCore.AuthorizationCode.Handler;
 using FluentSpotifyApi.Extensions;
@@ -29,6 +30,8 @@ namespace Cronos.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton(typeof(MockSpotifyService));
+
             services
                 .AddFluentSpotifyClient(clientBuilder => clientBuilder
                     .ConfigurePipeline(pipeline => pipeline
@@ -61,7 +64,19 @@ namespace Cronos.Web
                         o.SaveTokens = true;
                     });
 
+            //Automapper
+            services.AddAutoMapper(cfg => cfg.AddProfile(typeof(MappingProfile)));
+
             services.AddMvc();
+
+            //Session Handling
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.Name = Constants.CookieName;
+                options.Cookie.HttpOnly = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -109,6 +124,8 @@ namespace Cronos.Web
                 });
 
             app.UseStaticFiles();
+
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

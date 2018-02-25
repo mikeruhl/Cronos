@@ -1,0 +1,30 @@
+﻿@model FlowBaseViewModel
+
+<div class="row">
+    <div class="col-md-4">
+        <menu-link action="SelectArtist" controller="Home"
+                   display-text="Test 1 Link"
+                   min-required-state="0"
+                   link-target-state="@((int)UserState.SearchArtist)"
+                   current-state="(int)Model.CurrentState"
+                   highest-state="(int)Model.HighestState"></menu-link>
+    </div>
+   
+    @*<div class="col-md-4">
+        <menu-link action="Test2" controller="Home"
+                   display-text="Test 2 Link"
+                   min-required-stage="@((int)UserState.SelectedArtist)"
+                   link-target-stage="@((int)UserState.SelectAlbums)"
+                   current-stage="@model.CurrentStage"
+                   highest-stage="@model.MaxStage"></menu-link>
+    </div>
+
+    <div class="col-md-4">
+        <menu-link action="Test3" controller="Home"
+                   display-text="Test 3 Link"
+                   min-required-stage="@((int)UserState.SelectedAlbums)"
+                   link-target-stage="@((int)UserState.GeneratePlaylist)"
+                   current-stage="@model.CurrentStage"
+                   highest-stage="@model.MaxStage"></menu-link>
+    </div>*@
+</div>

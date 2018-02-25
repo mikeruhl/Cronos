@@ -1,0 +1,33 @@
+﻿@model SelectArtistViewModel
+@{
+    ViewData["Title"] = "Test1";
+}
+
+<h2>Test1</h2>
+@await Component.InvokeAsync("ProgressMenu", Model)
+
+<form asp-controller="Home" asp-action="SelectArtist" method="post">
+    <input asp-for="SearchTerm" type="text"/>
+    <button type="submit">Search Artist</button>
+</form>
+
+<div>
+    @if (Model.ArtistResults != null)
+    {
+        if (!Model.ArtistResults.Any())
+        {
+            <h3>No Results!</h3>
+        }
+        else
+        {
+            <h3>Results:</h3>
+            <ul>
+                @foreach (var artist in Model.ArtistResults)
+                {
+                    <li><a asp-controller="Home" asp-action="SelectAlbumByArtist" asp-route-artistId="@artist.Id">@artist.Name</a> </li>
+                }
+            </ul>
+        }
+    }
+    
+</div>
