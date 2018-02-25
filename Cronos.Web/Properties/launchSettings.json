@@ -12,6 +12,7 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
+        "SPOTIFY_CLIENT_SECRET": "2c78a791101e4babb8a64944200cb0d4",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
