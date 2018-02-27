@@ -3,6 +3,25 @@
     padding-bottom: 20px;
 }
 
+.btn-progress {
+    width: 100%;
+    border-bottom: 2px solid #ccc;
+    margin: 0;
+    color: #ccc;
+}
+
+
+
+.btn-progress-active {
+    color: #18bc9c;
+    border-bottom: 3px solid #18bc9c;
+}
+
+.btn-progress:hover {
+    color: #1a242f;
+    border-bottom-color: #1a242f;
+}
+
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {

@@ -1,1 +1,41 @@
-﻿
+﻿@using Microsoft.ApplicationInsights.AspNetCore
+@model CreatePlaylistViewModel
+<h1>Create a playlist</h1>
+@await Component.InvokeAsync("ProgressMenu", Model)
+<form method="POST" asp-action="CreatePlaylist">
+    <div class="form-group">
+        <label asp-for="PlaylistTitle"></label>
+        <input asp-for="PlaylistTitle" placeholder="Your playlist title" />
+        <span asp-validation-for="PlaylistTitle" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="checkbox" data-toggle="toggle" data-on="Public" data-off="Private" data-onstyle="success" data-offstyle="info" asp-for="Public"/>
+    </div>
+
+    <button type="submit" class="btn btn-primary ">Submit</button>
+    <ul class="list-group">
+        @foreach (var album in Model.SelectedAlbums)
+        {
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-md-1">
+                        <img class="img-rounded img-responsive" src="@album.ImgUrl" />
+                    </div>
+                    <div class="col-md-11">
+
+                        <div class="align-center">
+                            <h2>@album.Name</h2><small>@album.ReleaseDate</small>
+                        </div>
+
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+</form>
+
+@section Scripts{
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+}

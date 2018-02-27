@@ -38,9 +38,9 @@ namespace Cronos.Web.TagHelpers
 
                 var classes = "btn btn-progress";
 
-                if (LinkTargetState == CurrentState || CurrentState == (LinkTargetState^2))
+                if (LinkTargetState == CurrentState)
                 {
-                    classes += "btn-progress-active";
+                    classes += " btn-progress-active";
                 }
 
                 output.Attributes.Add("class", classes);

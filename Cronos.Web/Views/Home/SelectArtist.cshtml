@@ -3,9 +3,13 @@
     ViewData["Title"] = "Test1";
 }
 
-<h2>Test1</h2>
+<h2>Select Artist</h2>
 @await Component.InvokeAsync("ProgressMenu", Model)
 
+<div class="alert alert-danger" role="alert" id="warningSelect" style="visibility: @(TempData[Constants.ArtistErrorMessage] != null 
+                                                                                     && TempData[Constants.ArtistErrorMessage].Equals(true)?  "visible": "collapse");">
+    You must select at least one album
+</div>
 <form asp-controller="Home" asp-action="SelectArtist" method="post">
     <input asp-for="SearchTerm" type="text"/>
     <button type="submit">Search Artist</button>

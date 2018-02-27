@@ -8,15 +8,8 @@ namespace Cronos.Web.Models
 {
     public enum UserState
     {
-        StartingOut = 0,
-
-        SearchArtist = 2,
-        SelectedArtist = 4,
-
-        SelectAlbums = 8,
-        SelectedAlbums = 64,
-
-        GeneratePlaylist = 128,
-        GeneratedPlaylist = 16384
+        SelectArtist = 0,
+        SelectAlbums = 2,
+        CreatePlaylist = 4
     }
 }

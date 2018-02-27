@@ -1,0 +1,35 @@
+﻿@model SelectAlbumsViewModel
+@{
+    ViewData["Title"] = "SelectAlbum";
+}
+
+<h2>Select Album</h2>
+@await Component.InvokeAsync("ProgressMenu", Model)
+<div class="row">
+    <div class="col-md-2">
+        <a id="album-selectall" class="btn btn-primary"> Toggle Select All</a>
+    </div>
+</div>
+    <div class="alert alert-danger" role="alert" id="warningSelect" style="visibility: @(TempData[Constants.AlbumErrorMessage] != null 
+                                                                                         && TempData[Constants.AlbumErrorMessage].Equals(true)?  "visible": "collapse");">
+        You must select at least one album
+    </div>
+
+    <form method="POST" asp-action="SelectAlbumByArtist" id="formAlbumSelect">
+        <span asp-validation-for="AlbumResults" class="text-danger"></span>
+        <ul>
+            @{
+            var albums = Model.AlbumResults.ToArray();
+            }
+
+            @for (var i = 0; i < albums.Length; i++)
+        {
+            <li>
+                <input type="checkbox" asp-for="@albums[i].Checked" class="album-checkbox" />
+                <label asp-for="@albums[i].Name">@albums[i].Name</label>
+                <input type="hidden" asp-for="@albums[i].Id" />
+            </li>
+    }
+        </ul>
+        <button type="submit" class="btn btn-lg btn-primary btn-block">Create Playlist</button>
+    </form>

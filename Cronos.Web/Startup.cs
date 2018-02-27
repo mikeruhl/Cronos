@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using Cronos.Web.Models;
 
 namespace Cronos.Web
 {
@@ -30,7 +32,8 @@ namespace Cronos.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton(typeof(MockSpotifyService));
+            //services.AddSingleton(typeof(MockSpotifyService));
+            services.AddTransient(typeof(SpotifyService));
 
             services
                 .AddFluentSpotifyClient(clientBuilder => clientBuilder
@@ -65,18 +68,20 @@ namespace Cronos.Web
                     });
 
             //Automapper
-            services.AddAutoMapper(cfg => cfg.AddProfile(typeof(MappingProfile)));
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile(typeof(MappingProfile));
+            });
 
             services.AddMvc();
 
             //Session Handling
-            services.AddDistributedMemoryCache();
+            services.AddMemoryCache();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
-                options.Cookie.Name = Constants.CookieName;
-                options.Cookie.HttpOnly = true;
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

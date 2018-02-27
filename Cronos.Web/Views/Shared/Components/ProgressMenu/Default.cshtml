@@ -1,30 +1,33 @@
 ﻿@model FlowBaseViewModel
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <menu-link action="SelectArtist" controller="Home"
-                   display-text="Test 1 Link"
+                   display-text="Select Artist"
                    min-required-state="0"
-                   link-target-state="@((int)UserState.SearchArtist)"
+                   link-target-state="@((int)UserState.SelectArtist)"
                    current-state="(int)Model.CurrentState"
                    highest-state="(int)Model.HighestState"></menu-link>
     </div>
-   
-    @*<div class="col-md-4">
-        <menu-link action="Test2" controller="Home"
-                   display-text="Test 2 Link"
-                   min-required-stage="@((int)UserState.SelectedArtist)"
-                   link-target-stage="@((int)UserState.SelectAlbums)"
-                   current-stage="@model.CurrentStage"
-                   highest-stage="@model.MaxStage"></menu-link>
+
+    <div class="col-md-3">
+        <menu-link action="SelectAlbums" controller="Home"
+                   display-text="Select Albums"
+                   min-required-state="@((int)UserState.SelectAlbums)"
+                   link-target-state="@((int)UserState.SelectAlbums)"
+                   current-state="(int)Model.CurrentState"
+                   highest-state="(int)Model.HighestState"></menu-link>
     </div>
 
-    <div class="col-md-4">
-        <menu-link action="Test3" controller="Home"
-                   display-text="Test 3 Link"
-                   min-required-stage="@((int)UserState.SelectedAlbums)"
-                   link-target-stage="@((int)UserState.GeneratePlaylist)"
-                   current-stage="@model.CurrentStage"
-                   highest-stage="@model.MaxStage"></menu-link>
-    </div>*@
+    <div class="col-md-3">
+        <menu-link action="CreatePlaylist" controller="Home"
+                   display-text="Generate Playlist"
+                   min-required-state="@((int)UserState.CreatePlaylist)"
+                   link-target-state="@((int)UserState.CreatePlaylist)"
+                   current-state="(int)Model.CurrentState"
+                   highest-state="(int)Model.HighestState"></menu-link>
+    </div>
+<div class="col-md-3">
+    <a asp-action="StartOver" asp-controller="Home" class="btn btn-progress">Start Over</a>
+    </div>
 </div>

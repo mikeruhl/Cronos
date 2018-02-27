@@ -1,0 +1,23 @@
+﻿@model CompletedPlaylistViewModel
+<h3>Complete Playlist</h3>
+<div class="container">
+    <div class="row text-center">
+        <strong>@Model.Name</strong>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <img src="@Model.ImgUrl" class="img-responsive" alt="Playlist Image"/>
+        </div>
+        <div class="row">
+            <div class="col-md-3 col-md-4">
+                <a href="@Model.Href">Playlist Link</a>
+            </div>
+        </div>
+        <ul class="list-group">
+            @foreach (var t in Model.Tracks)
+            {
+                <li>@t</li>
+            }
+        </ul>
+    </div>
+</div>

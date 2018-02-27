@@ -7,10 +7,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Cronos.Web
 {
-    internal static class Constants
+    public static class Constants
     {
         internal const string SessionKeyName = "Cronos.SessionId";
         internal const string CookieName = "Cronos.Cookie.Session";
+        public const string AlbumErrorMessage = "AlbumError";
+        public const string ArtistErrorMessage = "ArtistError";
 
 
     }

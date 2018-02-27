@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using FluentSpotifyApi.Model;
@@ -11,9 +12,10 @@ namespace Cronos.Web.Models
     {
         public UserProgress()
         {
-            CurrentState = UserState.StartingOut;
 
         }
+
+        public Guid Id { get; set; }
 
         private UserState _currentState;
 
@@ -43,5 +45,14 @@ namespace Cronos.Web.Models
         public string SearchTerm { get; set; }
         public IEnumerable<Artist> ArtistResults { get; set; }
         public IEnumerable<Album> AlbumResults { get; set; }
+
+        public void Reset()
+        {
+            CurrentState = UserState.SelectArtist;
+            HighestState = UserState.SelectArtist;
+            ArtistResults = null;
+            AlbumResults = null;
+            SelectedArtist = string.Empty;
+        }
     }
 }
