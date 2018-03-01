@@ -14,4 +14,12 @@ $(document).ready(function () {
         }
 
     });
+
+    $('.album-check').click(function() {
+        if ($(this).hasClass('active')) {
+            $(this).find('input[type="checkbox"]').prop('checked', false);
+        } else {
+            $(this).find('input[type="checkbox"]').prop('checked', true);
+        }
+    })
 });

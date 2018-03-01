@@ -17,19 +17,19 @@
 
     <form method="POST" asp-action="SelectAlbumByArtist" id="formAlbumSelect">
         <span asp-validation-for="AlbumResults" class="text-danger"></span>
-        <ul>
+        <div class="list-group" data-toggle="items">
             @{
             var albums = Model.AlbumResults.ToArray();
             }
 
             @for (var i = 0; i < albums.Length; i++)
         {
-            <li>
-                <input type="checkbox" asp-for="@albums[i].Checked" class="album-checkbox" />
+            <a href="#" class="list-group-item album-check @(albums[i].Checked ? "active":"")" >
+                <input asp-for="@albums[i].Checked" class="album-checkbox" type="checkbox" style="display: none;" id="checkbox" />
                 <label asp-for="@albums[i].Name">@albums[i].Name</label>
                 <input type="hidden" asp-for="@albums[i].Id" />
-            </li>
+            </a>
     }
-        </ul>
+        </div>
         <button type="submit" class="btn btn-lg btn-primary btn-block">Create Playlist</button>
     </form>

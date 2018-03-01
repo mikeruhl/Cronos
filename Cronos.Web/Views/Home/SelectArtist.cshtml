@@ -7,7 +7,7 @@
 @await Component.InvokeAsync("ProgressMenu", Model)
 
 <div class="alert alert-danger" role="alert" id="warningSelect" style="visibility: @(TempData[Constants.ArtistErrorMessage] != null 
-                                                                                     && TempData[Constants.ArtistErrorMessage].Equals(true)?  "visible": "collapse");">
+                                                      && TempData[Constants.ArtistErrorMessage].Equals(true)?  "visible": "collapse");">
     You must select at least one album
 </div>
 <form asp-controller="Home" asp-action="SelectArtist" method="post">
