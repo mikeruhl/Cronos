@@ -21,5 +21,41 @@ $(document).ready(function () {
         } else {
             $(this).find('input[type="checkbox"]').prop('checked', true);
         }
-    })
+    });
+
+
+    $('.artist-suggestion').autocomplete({
+        minLength: 3,
+        source: function(request, response) {
+            var endpoint = $('.artist-suggestion').attr('artist-suggestion-url');
+            console.log("hitting url: " + endpoint);
+            if (endpoint === undefined)
+                return;
+            $.ajax({
+                url: endpoint,
+                type: 'GET',
+                dataType: 'json',
+                data: request,
+                success: function(data) {
+                    response($.map(data,
+                        function(item) {
+                            return {
+                                label: item.name,
+                                id: item.id,
+                                url: item.imgUrl
+                            }
+                        }));
+                }
+            });
+        },
+        select: function(event, ui) {
+            $(".artist-id").val(ui.item.id);
+        }
+    });
+    //.autocomplete("instance")._renderItem = function(ul, item) {
+    //    return $("<li>")
+    //        .append("<div><img class=\"img img-responsive\" src=\"" + item.url + "\"></img><br>" + item.label + "</div>")
+    //        .appendTo(ul);
+    //};
+
 });

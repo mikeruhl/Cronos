@@ -18,18 +18,7 @@
         @foreach (var album in Model.SelectedAlbums)
         {
             <li class="list-group-item">
-                <div class="row">
-                    <div class="col-md-1">
-                        <img class="img-rounded img-responsive" src="@album.ImgUrl" />
-                    </div>
-                    <div class="col-md-11">
-
-                        <div class="align-center">
-                            <h2>@album.Name</h2><small>@album.ReleaseDate</small>
-                        </div>
-
-                    </div>
-                </div>
+                @await Html.PartialAsync("AlbumView", album)
             </li>
         }
     </ul>

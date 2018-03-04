@@ -71,7 +71,12 @@ namespace Cronos.Web.Controllers
                 return View(oldVm);
             }
 
-            if (!string.IsNullOrEmpty(vm.SearchTerm))
+            if (!string.IsNullOrWhiteSpace(vm.SearchedArtistId))
+            {
+                CronosState.SelectedArtist = vm.SearchedArtistId;
+                return RedirectToAction("SelectAlbumByArtist", "Home", new {ArtistId = CronosState.SelectedArtist });
+            }
+            else if (!string.IsNullOrEmpty(vm.SearchTerm))
             {
                 CronosState.SearchTerm = vm.SearchTerm;
                 var results = await _spotifyService.SearchArtistsAsync(vm.SearchTerm);
@@ -89,7 +94,7 @@ namespace Cronos.Web.Controllers
         {
             if (CronosState.SelectedArtist == null || CronosState.HighestState < UserState.SelectAlbums)
             {
-                RedirectToAction("SelectArtist");
+               return RedirectToAction("SelectArtist");
             }
             CronosState.CurrentState = UserState.SelectAlbums;
 
@@ -99,6 +104,15 @@ namespace Cronos.Web.Controllers
             var vm = _mapper.Map<SelectAlbumsViewModel>(CronosState);
 
             return View(vm);
+        }
+
+        public async Task<IActionResult> SuggestedArtists(string term)
+        {
+            var artistSearches = await _spotifyService.SearchArtistsAsync(term);
+            var artistResults = _mapper.Map<IEnumerable<Artist>>(artistSearches).ToList();
+
+            return Json(artistResults);
+
         }
 
         public async Task<IActionResult> SelectAlbumByArtist(string artistId)

@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Cronos.Web.Models;
 using Cronos.Web.ViewModels;
 using FluentSpotifyApi.Builder.User.Playlists;
 using FluentSpotifyApi.Model;
+using Newtonsoft.Json;
 
 namespace Cronos.Web
 {
@@ -15,6 +17,10 @@ namespace Cronos.Web
             CreateMap<FullArtist, Artist>()
                 .ForMember(dest => dest.ImgUrl,
                     m => m.MapFrom(src => src.Images.OrderByDescending(i => i.Width).FirstOrDefault().Url));
+
+            CreateMap<FullArtist, ArtistThumbnail>()
+                .ForMember(dest => dest.ImgUrl,
+                    m => m.MapFrom(src => src.Images.OrderBy(i => i.Width).FirstOrDefault().Url));
 
             CreateMap<FullAlbum, Album>()
                 .ForMember(dest => dest.ImgUrl,
@@ -33,9 +39,10 @@ namespace Cronos.Web
                             dest.Tracks.Add(newTrack);
                             trackIterator++;
                         }
-
-                        
                     }
+
+                    //copyrights
+
                 });
                 //.ForMember(dest=> dest.Tracks,
                 //    m=>m.MapFrom(src => src.Tracks.Items.ToDictionary(k=>((k.DiscNumber - 1) * k.TrackNumber) + k.TrackNumber, v=>new Track()

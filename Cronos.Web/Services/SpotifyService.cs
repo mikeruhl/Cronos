@@ -85,7 +85,7 @@ namespace Cronos.Web.Services
 
             Task.WaitAll(tasks.ToArray());
 
-            return returnAlbums.ToArray();
+            return returnAlbums.Distinct(new AlbumEqualityComparer()).ToArray();
         }
 
         public async Task<FullPlaylist> CreatePlaylistAsync(Playlist playlist)
@@ -107,6 +107,19 @@ namespace Cronos.Web.Services
             var fullPlaylist = await _fluentSpotifyClient.Me.Playlist(newPlaylist.Id).GetAsync();
             return fullPlaylist;
 
+        }
+    }
+
+    public class AlbumEqualityComparer : IEqualityComparer<FullAlbum>
+    {
+        public bool Equals(FullAlbum x, FullAlbum y)
+        {
+            return GetHashCode(x) == GetHashCode(y);
+        }
+
+        public int GetHashCode(FullAlbum obj)
+        {
+            return obj.Name.GetHashCode() * obj.Tracks.Items.Length;
         }
     }
 }

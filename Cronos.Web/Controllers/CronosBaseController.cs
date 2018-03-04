@@ -59,7 +59,7 @@ namespace Cronos.Web.Controllers
         {
             var cacheEntryOptions = new MemoryCacheEntryOptions()
                 // Keep in cache for this time, reset time if accessed.
-                .SetSlidingExpiration(TimeSpan.FromSeconds(15));
+                .SetSlidingExpiration(TimeSpan.FromMinutes(30));
 
             _memoryCache.Set(CronosState.Id, CronosState, cacheEntryOptions);
 

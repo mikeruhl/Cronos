@@ -24,10 +24,11 @@
 
             @for (var i = 0; i < albums.Length; i++)
         {
-            <a href="#" class="list-group-item album-check @(albums[i].Checked ? "active":"")" >
-                <input asp-for="@albums[i].Checked" class="album-checkbox" type="checkbox" style="display: none;" id="checkbox" />
-                <label asp-for="@albums[i].Name">@albums[i].Name</label>
-                <input type="hidden" asp-for="@albums[i].Id" />
+            <a href="#" class="list-group-item album-check @(albums[i].Checked ? "active" : "")">
+                @await Html.PartialAsync("AlbumView", albums[i])
+                <input asp-for="@albums[i].Checked" class="album-checkbox" type="checkbox" style="display: none;" id="checkbox"/>
+                @*<label asp-for="@albums[i].Name">@albums[i].Name</label>*@
+                <input type="hidden" asp-for="@albums[i].Id"/>
             </a>
     }
         </div>
