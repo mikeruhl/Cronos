@@ -1,13 +1,11 @@
 ﻿@model Album
-<div class="row">
-    <div class="col-md-1">
-        <img class="img-rounded img-responsive" src="@Model.ImgUrl" />
-    </div>
-    <div class="col-md-11">
-
-        <div class="align-center">
-            <h2>@Model.Name</h2><small>@Model.ReleaseDate</small>
-        </div>
-
+<div class="media">
+    @if (!string.IsNullOrWhiteSpace(Model.ImgUrl))
+    {
+        <img class="mr-3" style="width: 64px;" src="@Model.ImgUrl"/>
+    }
+    <div class="media-body">
+        <h5 class="mt-0  @(Model.Name.Length > 50 ? "sm-title" : "")">@Model.Name</h5>
+        @Model.ReleaseDate
     </div>
 </div>

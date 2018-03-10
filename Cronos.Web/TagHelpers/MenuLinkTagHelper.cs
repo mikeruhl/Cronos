@@ -25,35 +25,37 @@ namespace Cronos.Web.TagHelpers
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-
             if (HighestState >= MinRequiredState)
             {
                 var helper = new UrlHelper(ViewContext);
+                var link = new TagBuilder("a");
+
                 var targetUrl = string.Empty;
 
                     targetUrl = helper.Action(Action, Controller);
 
-                                    output.TagName = "a";
-                output.Attributes.Add("href", targetUrl);
+                link.Attributes.Add("href", targetUrl);
 
-                var classes = "btn btn-progress";
+                var classes = "btn menu-nav btn-progress";
 
                 if (LinkTargetState == CurrentState)
                 {
-                    classes += " btn-progress-active";
+                    classes += "-active";
                 }
 
-                output.Attributes.Add("class", classes);
+                link.Attributes.Add("class", classes);
+                link.InnerHtml.AppendHtml(DisplayText);
+                output.Content.AppendHtml(link);
+                output.Attributes.Add("class", "col-md-4 link link-complete");
             }
             else
             {
-                output.TagName = "span";
-                output.Attributes.Add("class", "btn btn-progress");
+                var spanner = new TagBuilder("span");
+                spanner.Attributes.Add("class", "btn btn-progress  menu-stub");
+                spanner.InnerHtml.AppendHtml(DisplayText);
+                output.Attributes.Add("class", "col-md-4 link");
+                output.Content.AppendHtml(spanner);
             }
-
-
-            output.Content.SetContent(DisplayText);
-
         }
     }
 }

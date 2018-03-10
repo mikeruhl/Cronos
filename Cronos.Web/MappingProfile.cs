@@ -15,12 +15,9 @@ namespace Cronos.Web
         public MappingProfile()
         {
             CreateMap<FullArtist, Artist>()
+                .ForMember(dest=>dest.IsSelectedArtist, opt=>opt.Ignore())
                 .ForMember(dest => dest.ImgUrl,
                     m => m.MapFrom(src => src.Images.OrderByDescending(i => i.Width).FirstOrDefault().Url));
-
-            CreateMap<FullArtist, ArtistThumbnail>()
-                .ForMember(dest => dest.ImgUrl,
-                    m => m.MapFrom(src => src.Images.OrderBy(i => i.Width).FirstOrDefault().Url));
 
             CreateMap<FullAlbum, Album>()
                 .ForMember(dest => dest.ImgUrl,
@@ -42,7 +39,7 @@ namespace Cronos.Web
                     }
 
                     //copyrights
-
+                    dest.ReleaseDate = src.ReleaseDate.Substring(0, 4);
                 });
                 //.ForMember(dest=> dest.Tracks,
                 //    m=>m.MapFrom(src => src.Tracks.Items.ToDictionary(k=>((k.DiscNumber - 1) * k.TrackNumber) + k.TrackNumber, v=>new Track()
@@ -65,15 +62,17 @@ namespace Cronos.Web
             CreateMap<Playlist, CreatePlaylistDto>();
 
             CreateMap<FullPlaylist, CompletedPlaylistViewModel>()
-                .BeforeMap((f, c) =>
+                .ForMember(dest => dest.ImgUrl,
+                    m => m.MapFrom(src => src.Images.OrderByDescending(i => i.Width).FirstOrDefault().Url))
+                .ForMember(dest => dest.ExtUrl,
+                    m => m.MapFrom(src => src.ExternalUrls.FirstOrDefault(s=>s.Key == "spotify").Value))
+                .AfterMap((f, c) =>
                 {
-                    c = new CompletedPlaylistViewModel
-                    {
-                        ImgUrl = f.Images.OrderByDescending(i => i.Width).FirstOrDefault()?.Url
-                    };
+                    var i = 1;
                     foreach (var t in f.Tracks.Items)
                     {
-                        c.Tracks.Add($"{t.Track.TrackNumber} - {t.Track.Name}");
+                        c.Tracks.Add($"{i} - {t.Track.Name}");
+                        i++;
                     }
                 });
 

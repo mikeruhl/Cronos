@@ -1,36 +1,49 @@
 ﻿@model SelectAlbumsViewModel
 @{
-    ViewData["Title"] = "SelectAlbum";
+    ViewData["Title"] = "Cronos - Album Selection";
 }
 
 <h2>Select Album</h2>
 @await Component.InvokeAsync("ProgressMenu", Model)
-<div class="row">
-    <div class="col-md-2">
-        <a id="album-selectall" class="btn btn-primary"> Toggle Select All</a>
-    </div>
+<br/>
+<div class="col-md-10">
+    <p class="lead">Select at least one album below and click 'Create Playlist'</p>
 </div>
     <div class="alert alert-danger" role="alert" id="warningSelect" style="visibility: @(TempData[Constants.AlbumErrorMessage] != null 
                                                                                          && TempData[Constants.AlbumErrorMessage].Equals(true)?  "visible": "collapse");">
         You must select at least one album
     </div>
+<div class="results-container">
 
     <form method="POST" asp-action="SelectAlbumByArtist" id="formAlbumSelect">
         <span asp-validation-for="AlbumResults" class="text-danger"></span>
-        <div class="list-group" data-toggle="items">
-            @{
-            var albums = Model.AlbumResults.ToArray();
-            }
+        <div class="form-group">
+            <div class="col-md-2">
+                <a id="album-selectall" class="btn btn-secondary">Select All</a>
+            </div>
+            
+        </div>
 
-            @for (var i = 0; i < albums.Length; i++)
+        <div class="form-group">
+            <div class="list-group" data-toggle="items">
+                @{
+            var albums = Model.AlbumResults.ToArray();
+                }
+
+                @for (var i = 0; i < albums.Length; i++)
         {
             <a href="#" class="list-group-item album-check @(albums[i].Checked ? "active" : "")">
                 @await Html.PartialAsync("AlbumView", albums[i])
-                <input asp-for="@albums[i].Checked" class="album-checkbox" type="checkbox" style="display: none;" id="checkbox"/>
+                <input asp-for="@albums[i].Checked" class="album-checkbox" type="checkbox" style="display: none;" />
                 @*<label asp-for="@albums[i].Name">@albums[i].Name</label>*@
-                <input type="hidden" asp-for="@albums[i].Id"/>
+                <input type="hidden" asp-for="@albums[i].Id" />
             </a>
-    }
+}
+            </div>
         </div>
-        <button type="submit" class="btn btn-lg btn-primary btn-block">Create Playlist</button>
+        <div class="form-group">
+            <button type="submit" class="btn btn-lg btn-primary btn-block submit-albums">Create Playlist</button>
+        </div>
+        
     </form>
+</div>

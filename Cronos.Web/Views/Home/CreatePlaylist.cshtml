@@ -1,28 +1,40 @@
 ﻿@using Microsoft.ApplicationInsights.AspNetCore
 @model CreatePlaylistViewModel
-<h1>Create a playlist</h1>
+@{
+    ViewData["Title"] = "Cronos - Playlist Settings";
+}
 @await Component.InvokeAsync("ProgressMenu", Model)
+<br /><br />
 <form method="POST" asp-action="CreatePlaylist">
-    <div class="form-group">
-        <label asp-for="PlaylistTitle"></label>
-        <input asp-for="PlaylistTitle" placeholder="Your playlist title" />
-        <span asp-validation-for="PlaylistTitle" class="text-danger"></span>
-    </div>
+    <div class="form-row align-items-center justify-content-center">
+        <div class="col-md-3">
+            <label asp-for="PlaylistTitle" class="sr-only mb-2"></label>
+            <input asp-for="PlaylistTitle" placeholder="Your playlist title" class="form-control my-2" aria-describedby="playlistTitle" />
+            <span asp-validation-for="PlaylistTitle" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <input type="checkbox" data-toggle="toggle" data-on="Public" data-off="Private" data-onstyle="success" data-offstyle="info" asp-for="Public"/>
+        <div class="col-md-1">
+            <input type="checkbox" class="mb-2" data-toggle="toggle" data-on="Public" data-onstyle="info" data-offstyle="warning" data-off="Private" asp-for="Public" />
+        </div>
     </div>
+    <div class="form-row align-items-center justify-content-center">
+        <div class="col-md-4 my-1">
+            <button type="submit" class="btn btn-primary btn-block">Create Playlist</button>
+        </div>
 
-    <button type="submit" class="btn btn-primary ">Submit</button>
-    <ul class="list-group">
-        @foreach (var album in Model.SelectedAlbums)
-        {
-            <li class="list-group-item">
-                @await Html.PartialAsync("AlbumView", album)
-            </li>
-        }
-    </ul>
+    </div>
 </form>
+
+
+
+<ul class="list-group">
+    @foreach (var album in Model.SelectedAlbums)
+    {
+        <li class="list-group-item">
+            @await Html.PartialAsync("AlbumView", album)
+        </li>
+    }
+</ul>
 
 @section Scripts{
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">

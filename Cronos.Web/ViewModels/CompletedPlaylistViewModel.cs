@@ -18,6 +18,7 @@ namespace Cronos.Web.ViewModels
         public List<string> Tracks { get; set; }
 
         public string Href { get; set; }
+        public string ExtUrl { get; set; }
         public string ImgUrl { get; set; }
         public string Name { get; set; }
         public bool? Public { get; set; }

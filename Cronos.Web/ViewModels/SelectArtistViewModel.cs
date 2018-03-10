@@ -17,5 +17,7 @@ namespace Cronos.Web.ViewModels
         public string SearchedArtistId { get; set; }
 
         public string ArtistListMessage { get; set; }
+
+        public Artist SelectedArtist { get; set; }
     }
 }

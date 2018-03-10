@@ -1,48 +1,65 @@
 ﻿@model SelectArtistViewModel
 @{
-    ViewData["Title"] = "Test1";
+    ViewData["Title"] = "Cronos - Artist Selection";
 }
 
-<h2>Select Artist</h2>
 @await Component.InvokeAsync("ProgressMenu", Model)
 
 <div class="alert alert-danger" role="alert" id="warningSelect" style="visibility: @(TempData[Constants.ArtistErrorMessage] != null 
                                                                                      && TempData[Constants.ArtistErrorMessage].Equals(true)?  "visible": "collapse");">
     You must select at least one album
 </div>
-<div class="row">
-    <div class="col-md-4 col-md-offset-4">
-        <form asp-controller="Home" asp-action="SelectArtist" method="post" class="form-inline">
-            <div class="form-group">
-                <label asp-for="SearchTerm">Artist</label>
-                <input asp-for="SearchTerm" class="form-control artist-suggestion" artist-suggestion-url="@Url.Action("SuggestedArtists", "Home")" type="text"/>
+
+@*@if (Model.SelectedArtist == null)
+{
+    <div class="row justify-content-md-center">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="text-center">Selected Artist</h2>
+                @await Html.PartialAsync("ArtistView", Model.ArtistResults.FirstOrDefault(a => a.Id == Model.SelectedArtist.Id))
+                <a asp-action="StartOver" class="btn btn-danger btn-block">Reset</a>
             </div>
-            <div class="form-group">
-                <input type="hidden" asp-for="SearchedArtistId" class="form-control artist-id" />
-            </div>
-            <button type="submit" class="btn btn-default">Search Artist</button>
-        </form>
+        </div>
+        
     </div>
-</div>
+
+}*@
 
 
-<div>
-    @if (Model.ArtistResults != null)
-    {
-        if (!Model.ArtistResults.Any())
+    <div class="row justify-content-md-center">
+        <div class=" col col-md-4">
+            <form asp-controller="Home" asp-action="SelectArtist" method="post" class="form-inline artist-search-form">
+
+                <label asp-for="SearchTerm" class="sr-only"></label>
+                <input asp-for="SearchTerm" class="form-control artist-suggestion mb-2 mr-sm-2" placeholder="Artist Name" artist-suggestion-url="@Url.Action("SuggestedArtists", "Home")" type="text" />
+                <input type="hidden" asp-for="SearchedArtistId" class="form-control artist-id" />
+
+                <button type="submit" class="btn btn-default mb-2">Search Artist</button>
+            </form>
+        </div>
+    </div>
+
+    <p class="lead">@Model.ArtistListMessage</p>
+    <hr />
+    <div class="container-fluid">
+        @if (Model.ArtistResults != null)
         {
-            <h3>No Results!</h3>
+            if (!Model.ArtistResults.Any())
+            {
+                <p class="lead">No Results!</p>
+            }
+            else
+            {
+
+                <div class="row">
+                    @foreach (var artist in Model.ArtistResults)
+                    {
+                        <div class="col-md-4">
+                            @await Html.PartialAsync("ArtistView", artist)
+                        </div>
+                    }
+                </div>
+            }
         }
-        else
-        {
-            <h3>Results:</h3>
-            <ul>
-                @foreach (var artist in Model.ArtistResults)
-                {
-                    <li><a asp-controller="Home" asp-action="SelectAlbumByArtist" asp-route-artistId="@artist.Id">@artist.Name</a> </li>
-                }
-            </ul>
-        }
-    }
-    
-</div>
+
+    </div>

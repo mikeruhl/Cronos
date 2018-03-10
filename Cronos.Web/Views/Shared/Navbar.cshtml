@@ -1,0 +1,70 @@
+﻿@*<header class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="#" aria-label="Cronos">Cronos</a>
+    
+    <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+        @if (User.Identity.IsAuthenticated)
+    {
+        var imgLink = User.Claims.Where(c => c.Type == "urn:spotify:profilepicture").Select(c => c.Value).FirstOrDefault();
+        <li class="nav-item">
+            @if (!string.IsNullOrWhiteSpace(imgLink))
+            {
+            <img class="img img-rounded" src="@imgLink" alt="Profile Picture" style="height: 40px;" />
+            }
+            <span class="navbar-text">
+                @User.Identity.Name
+            </span>
+        </li>
+        <li class="nav-item">
+            <a class="btn btn-primary nav-link p-2" href="~/logout">Log Out</a>
+        </li>
+
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="btn btn-primary nav-link p-2" href="~/login">Login</a>
+            </li>
+        }
+
+
+    </ul>
+</header>*@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#" aria-label="Cronos">Cronos</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarMain">
+    </div>
+    <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+        
+        @if (User.Identity.IsAuthenticated)
+        {
+            var imgLink = User.Claims.Where(c => c.Type == "urn:spotify:profilepicture").Select(c => c.Value).FirstOrDefault();
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    @if (!string.IsNullOrWhiteSpace(imgLink))
+                    {
+                        <img class="img img-rounded" src="@imgLink" alt="Profile Picture" style="height: 40px;"/>
+                    }
+                    <span class="navbar-text">
+                        @User.Identity.Name
+                    </span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a asp-action="StartOver" asp-controller="Home" class="dropdown-item"><i class="fas fa-redo"></i>&nbspStart Over</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="~/logout"><i class="fas fa-sign-out-alt"></i>&nbspLog Out</a>
+                </div>
+            </li>
+
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link p-2" href="~/login">Login</a>
+            </li>
+        }
+    </ul>
+</nav>

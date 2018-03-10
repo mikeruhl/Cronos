@@ -1,0 +1,31 @@
+﻿@model Artist
+
+
+        @*<a asp-controller="Home" asp-action="SelectAlbumByArtist" asp-route-artistId="@Model.Id">
+            <img style="width: 64px;" src="@Model.ImgUrl" class="float-left" alt="Artist Image"/>
+            <span class="align-middle">@Model.Name</span>
+        </a>*@
+
+
+<div class="media artist-card @(Model.IsSelectedArtist ? "selected-artist" : "")">
+    <a asp-controller="Home" asp-action="SelectAlbumByArtist" asp-route-artistId="@Model.Id" style="width: 100%;">
+        
+        @if (!string.IsNullOrWhiteSpace(Model.ImgUrl))
+        {
+            <img class="float-left artist-thumb" src="@Model.ImgUrl" alt="Image of @Model.Name">
+        }
+
+        <div class="artist-desc">
+            <p class="lead @(Model.Name.Length > 50 ? "sm-title" : "")">@Model.Name</p>
+        </div>
+    </a>
+    @if (Model.IsSelectedArtist)
+    {
+    <span class="badge">
+        Selected Artist
+       
+    <a asp-action="StartOver" asp-controller="Home"><i class="fas fa-times-circle" style="color:Red"></i></a>
+
+    </span>
+    }
+</div>

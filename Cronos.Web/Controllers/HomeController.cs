@@ -38,9 +38,7 @@ namespace Cronos.Web.Controllers
         {
             CronosState.CurrentState = UserState.SelectArtist;
 
-            var helpMeNotSuck = TempData[Constants.ArtistErrorMessage];
-
-            var CurrentFeedback = "Search for you favorite artist or select one of your recents from below";
+            var CurrentFeedback = "Search for an artist or select one of your recents from below";
 
             if (!ModelState.IsValid)
             {
@@ -54,8 +52,28 @@ namespace Cronos.Web.Controllers
                 CronosState.ArtistResults = _mapper.Map<IEnumerable<Artist>>(recentlyPlayed);
             }
 
+            
+
             var vm = _mapper.Map<SelectArtistViewModel>(CronosState);
             vm.ArtistListMessage = CurrentFeedback;
+
+            if (vm.SelectedArtist != null)
+            {
+                var selectedArtist = vm.ArtistResults.FirstOrDefault(a => a.Id == vm.SelectedArtist.Id);
+                if (selectedArtist != null)
+                {
+                    vm.ArtistResults = vm.ArtistResults.OrderByDescending(a => a.IsSelectedArtist);
+                    selectedArtist.IsSelectedArtist = true;
+                }
+                else
+                {
+                    var arrayOfArtists = vm.ArtistResults.ToArray();
+                    var newListOfArtists = new List<Artist> {vm.SelectedArtist};
+                    newListOfArtists.AddRange(arrayOfArtists);
+                    vm.ArtistResults = newListOfArtists;
+                }
+            }
+
 
             return View(vm);
         }
@@ -73,10 +91,13 @@ namespace Cronos.Web.Controllers
 
             if (!string.IsNullOrWhiteSpace(vm.SearchedArtistId))
             {
-                CronosState.SelectedArtist = vm.SearchedArtistId;
-                return RedirectToAction("SelectAlbumByArtist", "Home", new {ArtistId = CronosState.SelectedArtist });
+                var selectedArtist = await _spotifyService.GetArtistById(vm.SearchedArtistId);
+                CronosState.SelectedArtist = _mapper.Map<Artist>(selectedArtist);
+
+                return RedirectToAction("SelectAlbumByArtist", "Home", new {ArtistId = CronosState.SelectedArtist.Id });
             }
-            else if (!string.IsNullOrEmpty(vm.SearchTerm))
+
+            if (!string.IsNullOrEmpty(vm.SearchTerm))
             {
                 CronosState.SearchTerm = vm.SearchTerm;
                 var results = await _spotifyService.SearchArtistsAsync(vm.SearchTerm);
@@ -117,10 +138,12 @@ namespace Cronos.Web.Controllers
 
         public async Task<IActionResult> SelectAlbumByArtist(string artistId)
         {
-            if (artistId == null)
+            if (string.IsNullOrWhiteSpace(artistId))
                 RedirectToAction("SelectAlbums");
 
-            CronosState.SelectedArtist = artistId;
+            var fullArtist = await _spotifyService.GetArtistById(artistId);
+
+            CronosState.SelectedArtist = _mapper.Map<Artist>(fullArtist);
 
             var albums = await _spotifyService.GetAlbumsByArtistAsync(artistId);
 
@@ -135,6 +158,10 @@ namespace Cronos.Web.Controllers
         [HttpPost]
         public IActionResult SelectAlbumByArtist(IEnumerable<Album> albums)
         {
+
+            if (CronosState?.AlbumResults == null)
+                return RedirectToAction("SelectArtist");
+
             var selectedAlbums = albums.Where(a => a.Checked).ToArray();
             if (selectedAlbums.Length == 0)
             {
@@ -173,6 +200,9 @@ namespace Cronos.Web.Controllers
                 var createPlaylist = _mapper.Map<CreatePlaylistViewModel>(CronosState);
                 return View(createPlaylist);
             }
+
+            if (CronosState?.AlbumResults == null)
+                return RedirectToAction("SelectArtist");
             try
             {
                 var playlist = new Playlist();
@@ -185,7 +215,7 @@ namespace Cronos.Web.Controllers
                 }
 
                 playlist.Name = viewModel.PlaylistTitle;
-                playlist.Description = viewModel.Description;
+                playlist.Description = $"Playlist created by cronos.frenetik.io on {DateTime.Now:D} by none other than {User.Identity.Name}";
                 playlist.Public = viewModel.Public;
 
                 var returnPlaylist = await _spotifyService.CreatePlaylistAsync(playlist);

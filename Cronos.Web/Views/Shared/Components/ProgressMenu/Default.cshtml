@@ -1,33 +1,29 @@
 ﻿@model FlowBaseViewModel
 
-<div class="row">
-    <div class="col-md-3">
+<div class="row progress-menu">
+
         <menu-link action="SelectArtist" controller="Home"
                    display-text="Select Artist"
                    min-required-state="0"
                    link-target-state="@((int)UserState.SelectArtist)"
                    current-state="(int)Model.CurrentState"
                    highest-state="(int)Model.HighestState"></menu-link>
-    </div>
 
-    <div class="col-md-3">
         <menu-link action="SelectAlbums" controller="Home"
                    display-text="Select Albums"
                    min-required-state="@((int)UserState.SelectAlbums)"
                    link-target-state="@((int)UserState.SelectAlbums)"
                    current-state="(int)Model.CurrentState"
                    highest-state="(int)Model.HighestState"></menu-link>
-    </div>
 
-    <div class="col-md-3">
         <menu-link action="CreatePlaylist" controller="Home"
                    display-text="Generate Playlist"
                    min-required-state="@((int)UserState.CreatePlaylist)"
                    link-target-state="@((int)UserState.CreatePlaylist)"
                    current-state="(int)Model.CurrentState"
                    highest-state="(int)Model.HighestState"></menu-link>
-    </div>
-<div class="col-md-3">
+
+@*<div class="col-md-3">
     <a asp-action="StartOver" asp-controller="Home" class="btn btn-progress">Start Over</a>
-    </div>
+    </div>*@
 </div>

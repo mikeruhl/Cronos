@@ -10,6 +10,7 @@ using FluentSpotifyApi;
 using FluentSpotifyApi.Builder.Artists;
 using FluentSpotifyApi.Builder.User.Playlists;
 using FluentSpotifyApi.Model;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
 namespace Cronos.Web.Services
@@ -19,12 +20,27 @@ namespace Cronos.Web.Services
         private IFluentSpotifyClient _fluentSpotifyClient;
         private ILogger<SpotifyService> _logger;
         private IMapper _mapper;
+        private IMemoryCache _memoryCache;
 
-        public SpotifyService(IFluentSpotifyClient fluentSpotifyClient, ILogger<SpotifyService> logger, IMapper mapper)
+        public SpotifyService(IFluentSpotifyClient fluentSpotifyClient, 
+            ILogger<SpotifyService> logger, 
+            IMapper mapper,
+            IMemoryCache memoryCache)
         {
             _fluentSpotifyClient = fluentSpotifyClient;
             _logger = logger;
             _mapper = mapper;
+            _memoryCache = memoryCache;
+             
+        }
+
+        public async Task<FullArtist> GetArtistById(string id)
+        {
+            if (_memoryCache.TryGetValue(id, out FullArtist artist))
+            {
+                return await Task.Run(()=> artist);
+            }
+            return await _fluentSpotifyClient.Artist(id).GetAsync();
         }
 
         public async Task<string> GetUserId()
@@ -49,6 +65,16 @@ namespace Cronos.Web.Services
             return mystuff
                 .Items;
 
+        }
+
+        private void CacheArtists(IEnumerable<FullArtist> artists)
+        {
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
+                // Keep in cache for this time, reset time if accessed.
+                .SetSlidingExpiration(TimeSpan.FromMinutes(30));
+
+            foreach (var artist in artists)
+                _memoryCache.Set(artist.Id, artist, cacheEntryOptions);
         }
 
         public async Task<FullArtist[]> SearchArtistsAsync(string searchTerm, int page = 0)

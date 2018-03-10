@@ -1,19 +1,29 @@
 ﻿@model CompletedPlaylistViewModel
-<h3>Complete Playlist</h3>
+@{
+    ViewData["Title"] = "Cronos - Playlist Created!";
+}
 <div class="container">
-    <div class="row text-center">
-        <strong>@Model.Name</strong>
+    <div class="row justify-content-center align-items-center h-50">
+        <h1 class="display-3">You did it!</h1>
     </div>
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            <img src="@Model.ImgUrl" class="img-responsive" alt="Playlist Image"/>
-        </div>
-        <div class="row">
-            <div class="col-md-3 col-md-4">
-                <a href="@Model.Href">Playlist Link</a>
-            </div>
-        </div>
-        <ul class="list-group">
+    <div class="row justify-content-center align-items-center">
+        <p>
+            You created a playlist named <span><strong>@Model.Name</strong></span> @if (!string.IsNullOrWhiteSpace(Model.ExtUrl))
+            {
+                <span>You can access your new playlist</span>
+                <a href="@Model.ExtUrl">here</a>
+                <span>.</span>
+            }
+        </p>
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <p>Create another by selecting your name above and click 'Start Over'</p>
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <img src="@Model.ImgUrl" class="rounded mx-auto d-block" alt="Playlist Image" />
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <ul class="list-group list-unstyled">
             @foreach (var t in Model.Tracks)
             {
                 <li>@t</li>

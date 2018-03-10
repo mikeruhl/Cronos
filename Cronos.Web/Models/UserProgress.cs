@@ -18,6 +18,7 @@ namespace Cronos.Web.Models
         public Guid Id { get; set; }
 
         private UserState _currentState;
+        private Artist _selectedArtist;
 
 
         public UserState HighestState { get;
@@ -39,7 +40,17 @@ namespace Cronos.Web.Models
             }
         }
 
-        public string SelectedArtist { get; set; }
+
+        public Artist SelectedArtist
+        {
+            get => _selectedArtist;
+            set
+            {
+                _selectedArtist = value;
+                if (value != null)
+                _selectedArtist.IsSelectedArtist = true;
+            }
+        }
 
 
         public string SearchTerm { get; set; }
@@ -52,7 +63,8 @@ namespace Cronos.Web.Models
             HighestState = UserState.SelectArtist;
             ArtistResults = null;
             AlbumResults = null;
-            SelectedArtist = string.Empty;
+            SelectedArtist = null;
+            SearchTerm = string.Empty;
         }
     }
 }
