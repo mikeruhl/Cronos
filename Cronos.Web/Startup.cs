@@ -34,7 +34,7 @@ namespace Cronos.Web
         {
             //services.AddSingleton(typeof(MockSpotifyService));
             services.AddTransient(typeof(SpotifyService));
-
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services
                 .AddFluentSpotifyClient(clientBuilder => clientBuilder
                     .ConfigurePipeline(pipeline => pipeline
@@ -127,6 +127,7 @@ namespace Cronos.Web
                             context.Response.Redirect("/");
                         });
                 });
+            app.UseSpotifyInvalidRefreshTokenExceptionHandler("/login");
 
             app.UseStaticFiles();
 
