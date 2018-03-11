@@ -20,14 +20,18 @@
         <p>Create another by selecting your name above and click 'Start Over'</p>
     </div>
     <div class="row justify-content-center align-items-center">
-        <img src="@Model.ImgUrl" class="rounded mx-auto d-block" alt="Playlist Image" />
+        <div class="card">
+            <img src="@Model.ImgUrl" class="card-img-top" alt="Playlist Image" />
+
+            <div class="card-body">
+                <h4 class="card-title">Track Listing</h4>
+                <ul class="list-group list-unstyled card-text">
+                    @foreach (var t in Model.Tracks)
+                    {
+                        <li>@t</li>
+                    }
+                </ul>
+            </div>
+        </div>
     </div>
-    <div class="row justify-content-center align-items-center">
-        <ul class="list-group list-unstyled">
-            @foreach (var t in Model.Tracks)
-            {
-                <li>@t</li>
-            }
-        </ul>
     </div>
-</div>
