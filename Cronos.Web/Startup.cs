@@ -15,6 +15,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Cronos.Web.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace Cronos.Web
 {
@@ -67,6 +69,11 @@ namespace Cronos.Web
                         o.SaveTokens = true;
                     });
 
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
+
             //Automapper
             services.AddAutoMapper(cfg =>
             {
@@ -95,6 +102,10 @@ namespace Cronos.Web
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                var options = new RewriteOptions()
+                    .AddRedirectToHttps();
+
+                app.UseRewriter(options);
             }
 
             app.UseAuthentication();
