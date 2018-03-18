@@ -11,6 +11,14 @@
     border-width: 2rem;
 }
 
+
+.footer {
+    padding: 20px 20px;
+    height: 60px;
+    line-height: 60px;
+    background-color: #f5f5f5;
+}
+
 .selected-artist {
     background-color: #20b2aa !important;
 }
@@ -125,6 +133,7 @@ artist-search-form {
     margin: 5px !important;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
 }
+
 
 .artist-thumb {
     margin: 5px;
