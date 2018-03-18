@@ -8,8 +8,8 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarMain">
-    </div>
-    <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+   
+    <ul class="navbar-nav ml-auto">
         
         @if (User.Identity.IsAuthenticated)
         {
@@ -40,4 +40,5 @@
             </li>
         }
     </ul>
+    </div>
 </nav>
