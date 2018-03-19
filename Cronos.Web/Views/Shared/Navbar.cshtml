@@ -15,7 +15,7 @@
         {
             var imgLink = User.Claims.Where(c => c.Type == "urn:spotify:profilepicture").Select(c => c.Value).FirstOrDefault();
 
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown d-none d-sm-block">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     @if (!string.IsNullOrWhiteSpace(imgLink))
                     {
@@ -30,6 +30,12 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="~/logout"><i class="fas fa-sign-out-alt"></i>&nbspLog Out</a>
                 </div>
+            </li>
+            <li class="nav-item d-block d-sm-none">
+                <a class="nav-link" asp-action="StartOver" asp-controller="Home" ><i class="fas fa-redo"></i>&nbspStart Over</a>
+            </li>
+            <li  class="nav-item d-block d-sm-none">
+                <a class="nav-link" href="~/logout"><i class="fas fa-sign-out-alt"></i>&nbspLog Out</a>
             </li>
 
         }
