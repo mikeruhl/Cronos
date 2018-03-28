@@ -33,7 +33,7 @@ namespace Cronos.Web
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddSingleton(typeof(MockSpotifyService));
-            services.AddTransient(typeof(SpotifyService));
+            services.AddTransient<ISpotifyService, SpotifyService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services
                 .AddFluentSpotifyClient(clientBuilder => clientBuilder

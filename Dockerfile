@@ -15,5 +15,4 @@ RUN dotnet publish Cronos.Web.csproj -o /publish
 FROM microsoft/aspnetcore:2
 COPY --from=build-env /publish /publish
 WORKDIR /publish
-ENV SpecialMessage="Hi There" 
 ENTRYPOINT ["dotnet", "Cronos.Web.dll"]

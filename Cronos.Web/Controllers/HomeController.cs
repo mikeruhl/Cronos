@@ -17,10 +17,10 @@ namespace Cronos.Web.Controllers
     [Authorize]
     public class HomeController : CronosBaseController
     {
-        private IMapper _mapper;
-        private SpotifyService _spotifyService;
+        private readonly IMapper _mapper;
+        private readonly ISpotifyService _spotifyService;
 
-        public HomeController(IMapper mapper, SpotifyService spotifyService, IMemoryCache memoryCache) 
+        public HomeController(IMapper mapper, ISpotifyService spotifyService, IMemoryCache memoryCache) 
             : base(memoryCache)
         {
             _mapper = mapper;

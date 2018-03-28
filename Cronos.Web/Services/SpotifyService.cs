@@ -15,9 +15,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Cronos.Web.Services
 {
-    public class SpotifyService
+    public class SpotifyService : ISpotifyService
     {
-        private IFluentSpotifyClient _fluentSpotifyClient;
+        private readonly IFluentSpotifyClient _fluentSpotifyClient;
         private ILogger<SpotifyService> _logger;
         private IMapper _mapper;
         private IMemoryCache _memoryCache;
@@ -43,20 +43,6 @@ namespace Cronos.Web.Services
             return await _fluentSpotifyClient.Artist(id).GetAsync();
         }
 
-        public async Task<string> GetUserId()
-        {
-            try
-            {
-                return (await _fluentSpotifyClient.Me.GetAsync()).Id;
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(LoggingEvents.GetUserId, e, "Couldn't get userid from Spotify Service", null);
-            }
-
-            return null;
-
-        }
         public async Task<IEnumerable<FullArtist>> GetRecentlyPlayed()
         {
 
